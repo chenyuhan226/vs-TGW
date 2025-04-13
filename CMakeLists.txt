@@ -24,6 +24,8 @@ set(SOURCES
     ${SRC_DIR}/bullet.cpp
     ${SRC_DIR}/boss.cpp
     ${SRC_DIR}/bossAttack.cpp
+    ${SRC_DIR}/soundManager.cpp
+    ${SRC_DIR}/stateManager.cpp
 )
 add_executable(vsTGW ${SOURCES})
 

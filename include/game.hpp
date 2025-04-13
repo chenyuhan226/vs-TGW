@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include "player.hpp"
 #include "boss.hpp" 
+#include "soundManager.hpp" // Include the SoundManager header
+#include "stateManager.hpp" // Include the GameStateManager header
+#include <memory> // For std::unique_ptr
 
 class Game
 {
@@ -19,5 +22,7 @@ private:
     sf::RenderWindow _window;
     Player _player;
     Boss _boss;
+    std::unique_ptr<SoundManager> _soundManager; // 声音管理器
+    GameStateManager _stateManager;
     // ...其他成员
 };

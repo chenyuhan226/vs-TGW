@@ -14,6 +14,7 @@ public:
     void update(const sf::Time& deltaTime);
     void draw(sf::RenderWindow& window) const;
 
+    float getHp() const;
     void takeDamage(int damage);
     bool isAlive() const;
     sf::FloatRect collisionRect() const;

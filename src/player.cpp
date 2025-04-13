@@ -81,6 +81,10 @@ void Player::draw(sf::RenderWindow &window) const
     }
 }
 
+float Player::getHp() const
+{
+    return _hp; // Return the current HP
+}
 void Player::takeDamage(int damage)
 {
     _hp -= damage;
