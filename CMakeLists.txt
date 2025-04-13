@@ -22,6 +22,8 @@ set(SOURCES
     ${SRC_DIR}/game.cpp
     ${SRC_DIR}/player.cpp
     ${SRC_DIR}/bullet.cpp
+    ${SRC_DIR}/boss.cpp
+    ${SRC_DIR}/bossAttack.cpp
 )
 add_executable(vsTGW ${SOURCES})
 

@@ -1,10 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class Bullet
+class BossAttack
 {
 public:
-    Bullet(const sf::Vector2f &startPos);
+    BossAttack(const sf::RenderWindow &window);
     void update(const sf::Time &deltaTime);
     void draw(sf::RenderWindow &window) const;
 
@@ -12,9 +12,11 @@ public:
     sf::FloatRect collisionRect() const; // get the bounding box of the bullet
 
 private:
-    sf::CircleShape _bullet;
-    // 存在 const 成员变量时，编译器无法生成默认的移动赋值运算符，std::vector 进行元素移动时失败
+    sf::RectangleShape _attack;
+    sf::Vector2u _windowSize;
+    
     float _speed = 1000.f; 
-    float _radius = 15.f; // Bullet radius
+    float _attackSizeX = 60.f; // size of the attack
+    float _attackSizeY = 100.f; // size of the attack
     bool _isActive = true;
 };

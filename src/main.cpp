@@ -1,8 +1,10 @@
 #include "Game.hpp" 
-#include <iostream>
-#include <filesystem>
+#include <cstdlib> // for rand() and srand()
+#include <iostream> // for std::cerr
+
 
 int main() {
+    srand(time(NULL));
     try {
         Game game;
         game.run();

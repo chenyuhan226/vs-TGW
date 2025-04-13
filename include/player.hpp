@@ -23,7 +23,7 @@ private:
 
     sf::Sprite _sprite;
     sf::Texture _texture;
-    const float _speed = 200.f;
+    const float _speed = 300.f;
 
     const sf::RenderWindow& _window;
 
@@ -33,5 +33,5 @@ private:
 
     std::vector<Bullet> _bullets; // Store bullets in a vector
     sf::Clock _shootClock; // Clock to track shooting time
-    const float _shootCooldown = 0.5f; // cooldown for shooting, seconds
+    const float _shootCooldown = 1.0f; // cooldown for shooting, seconds
 };

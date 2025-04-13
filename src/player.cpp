@@ -16,7 +16,9 @@ void Player::initHp()
 {
     _hpBar.setSize(sf::Vector2f(300.f, 50.f));
     _hpBar.setFillColor(sf::Color(0x77, 0x99, 0xCC, 0xFF));
-    _hpBar.setPosition(0.f, _window.getSize().y - 100.f);
+    _hpBar.setPosition(5.f, _window.getSize().y - 55.f);
+    _hpBar.setOutlineThickness(5.f);
+    _hpBar.setOutlineColor(sf::Color::Black);
 }
 
 void Player::shoot(const sf::Time &deltaTime)
@@ -66,17 +68,10 @@ void Player::update(const sf::Time &deltaTime)
         bullet.update(deltaTime); // Update each bullet
     }
     // Remove inactive bullets
-    for (auto it = _bullets.begin(); it != _bullets.end();)
-    {
-        if (!it->isActive())
-        {
-            it = _bullets.erase(it); // Remove inactive bullets
-        }
-        else
-        {
-            ++it;
-        }
-    }
+    _bullets.erase(std::remove_if(_bullets.begin(), _bullets.end(),
+        [](const Bullet& b) { return !b.isActive(); }),
+        _bullets.end());
+
     // Update the HP bar
     _hpBar.setSize(sf::Vector2f(_hpBar.getSize().x * (_hp / static_cast<float>(_maxHp)), _hpBar.getSize().x));
 }

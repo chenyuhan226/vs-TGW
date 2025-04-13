@@ -1,7 +1,7 @@
 #include "game.hpp"
 
 Game::Game()
-    : _window(sf::VideoMode(2300, 1300), "Shoot game"), _player(_window) 
+    : _window(sf::VideoMode(2300, 1300), "Shoot game"), _player(_window), boss(_window) 
 {
     _window.setFramerateLimit(60);
     _window.setPosition(sf::Vector2i(50, 50));
@@ -34,14 +34,14 @@ void Game::update(sf::Time dt)
 {
     _player.handleInput(dt);
     _player.update(dt);
-    // boss.update(dt); // Update boss if needed
+    boss.update(dt); // Update boss if needed
     // Update other game elements
 }
 void Game::draw()
 {
     _window.clear(sf::Color::White);
     _player.draw(_window);
-    // boss.draw(window); // Draw boss if needed
+    boss.draw(_window); 
     // Draw other game elements
     _window.display();
 }

@@ -22,7 +22,10 @@ void Bullet::update(const sf::Time& deltaTime)
 
 void Bullet::draw(sf::RenderWindow& window) const
 {
-    window.draw(_bullet); // Draw the bullet
+    if (_isActive)
+    {
+        window.draw(_bullet); // Draw the bullet if it's alive
+    }
 }
 
 bool Bullet::isActive() const
