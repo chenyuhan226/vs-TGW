@@ -16,6 +16,9 @@ public:
 
     void takeDamage(int damage);
     bool isAlive() const;
+    sf::FloatRect collisionRect() const;
+    std::vector<Bullet>& getBullets();
+    void cleanupBullets();
     
 private:
     void initHp();
@@ -28,8 +31,9 @@ private:
     const sf::RenderWindow& _window;
 
     sf::RectangleShape _hpBar;
-    const int _maxHp = 3;
-    int _hp = 3;
+    float _hp = 3.f; // Current HP
+    const float _maxHp = 3.f; // Maximum HP
+    const float _initialHpBarWidth = 300.f; // Initial width of the HP bar
 
     std::vector<Bullet> _bullets; // Store bullets in a vector
     sf::Clock _shootClock; // Clock to track shooting time

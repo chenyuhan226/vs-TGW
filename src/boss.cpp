@@ -15,9 +15,9 @@ Boss::Boss(const sf::RenderWindow &window) : _window(window), _windowX(window.ge
 
 void Boss::initHp()
 {
-    _hpBar.setSize(sf::Vector2f(_maxHp, 50.f));
+    _hpBar.setSize(sf::Vector2f(_initialHpBarWidth, 50.f));
     _hpBar.setFillColor(sf::Color::Red);
-    _hpBar.setPosition((_windowX - _maxHp) * 0.5f, 5.f);
+    _hpBar.setPosition((_windowX - _initialHpBarWidth) * 0.5f, 5.f);
     _hpBar.setOutlineThickness(5.f);
     _hpBar.setOutlineColor(sf::Color::Black);
 }
@@ -26,9 +26,8 @@ void Boss::update(const sf::Time &deltaTime)
 {
     if (_isAlive)
     {
-        _hpBar.setSize(sf::Vector2f(_hp, 50.f)); // Update the hp bar size dynamically
-        randomMove(deltaTime); // Move the boss randomly
-        attack(deltaTime);     // Implement attack logic here
+        randomMove(deltaTime);                   // Move the boss randomly
+        attack(deltaTime);                       // Implement attack logic here
     }
     for (auto it = _attacks.begin(); it != _attacks.end();)
     {
@@ -82,7 +81,10 @@ void Boss::takeDamage(int damage)
         _isAlive = false;
         _hp = 0; // Ensure hp doesn't go negative
     }
-    _hpBar.setSize(sf::Vector2f(_hp, 50.f)); // Update the hp bar size
+    // Update the HP bar
+    float newWidth = _initialHpBarWidth * (_hp / _maxHp);
+    newWidth = std::max(0.f, newWidth); // Ensure width doesn't go below 0
+    _hpBar.setSize(sf::Vector2f(newWidth, _hpBar.getSize().y));
 }
 
 bool Boss::isAlive() const
@@ -95,6 +97,22 @@ void Boss::attack(const sf::Time &deltaTime)
     if (_attackClock.getElapsedTime().asSeconds() >= _attackTime)
     {
         _attacks.emplace_back(_window); // Create a new attack
-        _attackClock.restart();          // Restart the attack clock
-    }  
+        _attackClock.restart();         // Restart the attack clock
+    }
+}
+
+sf::FloatRect Boss::collisionRect() const
+{
+    return _sprite.getGlobalBounds(); // Return the collision rectangle of the boss
+}
+std::vector<BossAttack> &Boss::getAttacks()
+{
+    return _attacks; // Return the vector of attacks
+}
+void Boss::cleanupAttacks()
+{
+    _attacks.erase(std::remove_if(_attacks.begin(), _attacks.end(),
+                                  [](const BossAttack &attack)
+                                  { return !attack.isActive(); }),
+                   _attacks.end());
 }

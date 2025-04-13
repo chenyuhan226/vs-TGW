@@ -1,7 +1,7 @@
 #include "game.hpp"
 
 Game::Game()
-    : _window(sf::VideoMode(2300, 1300), "Shoot game"), _player(_window), boss(_window) 
+    : _window(sf::VideoMode(2300, 1300), "Shoot game"), _player(_window), _boss(_window) 
 {
     _window.setFramerateLimit(60);
     _window.setPosition(sf::Vector2i(50, 50));
@@ -34,14 +34,28 @@ void Game::update(sf::Time dt)
 {
     _player.handleInput(dt);
     _player.update(dt);
-    boss.update(dt); // Update boss if needed
-    // Update other game elements
+    _boss.update(dt); // Update boss if needed
+
+    // Check collisions between player bullets and boss
+    for (auto &bullet : _player.getBullets()){
+        if(bullet.isActive() && bullet.collisionRect().intersects(_boss.collisionRect())){
+            _boss.takeDamage(10); // the max boss hp is 100
+            bullet.deactivate(); // Deactivate the bullet after collision
+        }
+    }
+    // Check collisions between boss attack and player
+    for (auto &attack : _boss.getAttacks()){
+        if(attack.isActive() && attack.collisionRect().intersects(_player.collisionRect())){
+            _player.takeDamage(1);
+            attack.deactivate(); // Deactivate the attack after collision
+        }
+    }
 }
 void Game::draw()
 {
     _window.clear(sf::Color::White);
     _player.draw(_window);
-    boss.draw(_window); 
+    _boss.draw(_window); 
     // Draw other game elements
     _window.display();
 }

@@ -43,3 +43,7 @@ sf::FloatRect BossAttack::collisionRect() const
     return _attack.getGlobalBounds(); // Return the bounding box of the attack
 }
 
+void BossAttack::deactivate()
+{
+    _isActive = false; // Deactivate the attack
+}

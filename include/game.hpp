@@ -18,6 +18,6 @@ private:
 
     sf::RenderWindow _window;
     Player _player;
-    Boss boss;
+    Boss _boss;
     // ...其他成员
 };

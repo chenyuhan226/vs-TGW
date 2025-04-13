@@ -10,6 +10,7 @@ public:
 
     bool isActive() const;
     sf::FloatRect collisionRect() const; // get the bounding box of the bullet
+    void deactivate();
 
 private:
     sf::CircleShape _bullet;

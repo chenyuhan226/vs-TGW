@@ -37,3 +37,8 @@ sf::FloatRect Bullet::collisionRect() const
 {
     return _bullet.getGlobalBounds(); // Return the bounding box of the bullet
 }
+
+void Bullet::deactivate()
+{
+    _isActive = false; // Deactivate the bullet
+}

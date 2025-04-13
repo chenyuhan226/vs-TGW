@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-Player::Player(const sf::RenderWindow& window) : _window(window)
+Player::Player(const sf::RenderWindow &window) : _window(window)
 {
     if (!_texture.loadFromFile("data/saki.png"))
         throw std::runtime_error("Failed to load player image!");
@@ -8,13 +8,13 @@ Player::Player(const sf::RenderWindow& window) : _window(window)
     _texture.setSmooth(true);
     _sprite.setScale(0.2f, 0.2f); // Scale down the sprite to make it smaller
     _sprite.setOrigin(_texture.getSize().x * 0.5f, _texture.getSize().y * 0.5f);
-    _sprite.setPosition(_window.getSize().x*0.5, _window.getSize().y - _sprite.getGlobalBounds().height);
+    _sprite.setPosition(_window.getSize().x * 0.5, _window.getSize().y - _sprite.getGlobalBounds().height);
     initHp();
 }
 
 void Player::initHp()
 {
-    _hpBar.setSize(sf::Vector2f(300.f, 50.f));
+    _hpBar.setSize(sf::Vector2f(_initialHpBarWidth, 50.f));
     _hpBar.setFillColor(sf::Color(0x77, 0x99, 0xCC, 0xFF));
     _hpBar.setPosition(5.f, _window.getSize().y - 55.f);
     _hpBar.setOutlineThickness(5.f);
@@ -68,12 +68,7 @@ void Player::update(const sf::Time &deltaTime)
         bullet.update(deltaTime); // Update each bullet
     }
     // Remove inactive bullets
-    _bullets.erase(std::remove_if(_bullets.begin(), _bullets.end(),
-        [](const Bullet& b) { return !b.isActive(); }),
-        _bullets.end());
-
-    // Update the HP bar
-    _hpBar.setSize(sf::Vector2f(_hpBar.getSize().x * (_hp / static_cast<float>(_maxHp)), _hpBar.getSize().x));
+    cleanupBullets();
 }
 
 void Player::draw(sf::RenderWindow &window) const
@@ -91,9 +86,29 @@ void Player::takeDamage(int damage)
     _hp -= damage;
     if (_hp < 0)
         _hp = 0; // Ensure HP doesn't go below 0
+    // Update the HP bar
+    float newWidth = _initialHpBarWidth * (_hp / _maxHp);
+    newWidth = std::max(0.f, newWidth); // Ensure width doesn't go below 0
+    _hpBar.setSize(sf::Vector2f(newWidth, _hpBar.getSize().y));
 }
 
 bool Player::isAlive() const
 {
     return _hp > 0; // Return true if the player is alive
+}
+
+sf::FloatRect Player::collisionRect() const
+{
+    return _sprite.getGlobalBounds(); // Return the player's collision rectangle
+}
+std::vector<Bullet> &Player::getBullets()
+{
+    return _bullets; // Return the vector of bullets
+}
+void Player::cleanupBullets()
+{
+    _bullets.erase(std::remove_if(_bullets.begin(), _bullets.end(),
+                                  [](const Bullet &b)
+                                  { return !b.isActive(); }),
+                   _bullets.end()); // Remove inactive bullets from the vector
 }

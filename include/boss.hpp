@@ -15,6 +15,9 @@ public:
     void randomMove(const sf::Time& deltaTime);
     void takeDamage(int damage);
     bool isAlive() const;
+    sf::FloatRect collisionRect() const; // Return the collision rectangle
+    std::vector<BossAttack>& getAttacks(); // Return the vector of attacks
+    void cleanupAttacks(); // Remove inactive attacks from the vector
     
 private:
     void initHp();
@@ -31,10 +34,13 @@ private:
 
     sf::Sprite _sprite;
     sf::Texture _texture;
+
     sf::RectangleShape _hpBar;
-    float _hp = 1000.f; // will be set to hpBar size
+    float _hp = 100.f; // will be set to hpBar size
+    const float _maxHp = 100.f; // will be set to hpBar size
+    const float _initialHpBarWidth = 2000.f; // will be set to hpBar size
+
     float _direction = 1.f; // 1 for right, -1 for left
-    const float _maxHp = 1500.f; // will be set to hpBar size
     const float _speed = 200.f;
     bool _isAlive = true;
 };
