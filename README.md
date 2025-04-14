@@ -1,6 +1,7 @@
 # vs-TGW
 ## Introduction
-This is a simple shoot game.
+This is a simple shoot game.  
+Current version 0.1
 Operation　　　　　　| Button  
 :-------------------|:---  
 start the game      | <kbd>Enter</kbd>  
