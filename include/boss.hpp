@@ -18,6 +18,7 @@ public:
     sf::FloatRect collisionRect() const; // Return the collision rectangle
     std::vector<BossAttack>& getAttacks(); // Return the vector of attacks
     void cleanupAttacks(); // Remove inactive attacks from the vector
+    void setAttackTime(float attackTime); // Set the attack time
     
 private:
     void initHp();
@@ -29,7 +30,7 @@ private:
     const float _windowY;
 
     std::vector<BossAttack> _attacks;
-    const float _attackTime = 0.5f; // time between attacks
+    float _attackTime = 0.5f; // time between attacks
     sf::Clock _attackClock;
 
     sf::Sprite _sprite;

@@ -116,3 +116,8 @@ void Boss::cleanupAttacks()
                                   { return !attack.isActive(); }),
                    _attacks.end());
 }
+
+void Boss::setAttackTime(float attackTime)
+{
+    _attackTime = attackTime; // Set the attack time
+}

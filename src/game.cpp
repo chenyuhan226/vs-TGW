@@ -1,15 +1,16 @@
 #include "game.hpp"
 
 Game::Game()
-    : _window(sf::VideoMode(2400, 1300), "Shoot game"), _player(_window), _boss(_window) 
+    : _window(sf::VideoMode(2400, 1300), "vs TGW"), _player(_window), _boss(_window) 
 {
     _window.setFramerateLimit(60);
     _window.setPosition(sf::Vector2i(50, 50));
     // intialize SoundManager 
-    // _soundManager = std::make_unique<SoundManager>();
-    // _soundManager->loadSound("boss_low", "data/boss_low.wav");
-    // _soundManager->loadSound("victory", "data/victory.wav");
-    // _soundManager->loadSound("defeat", "data/defeat.wav");
+    _soundManager = std::make_unique<SoundManager>();
+    _soundManager->loadSound("boss_high", "data/boss_high.wav");
+    _soundManager->loadSound("boss_skill", "data/boss_skill.wav");
+    _soundManager->loadSound("victory", "data/victory.wav");
+    _soundManager->loadSound("defeat", "data/defeat.wav");
 }
 
 void Game::run()
@@ -46,7 +47,7 @@ void Game::update(sf::Time dt)
         // Check collisions between player bullets and boss
         for (auto &bullet : _player.getBullets()){
             if(bullet.isActive() && bullet.collisionRect().intersects(_boss.collisionRect())){
-                _boss.takeDamage(20); // the max boss hp is 100
+                _boss.takeDamage(10); // the max boss hp is 100
                 bullet.deactivate(); // Deactivate the bullet after collision
             }
         }
@@ -58,14 +59,23 @@ void Game::update(sf::Time dt)
             }
         }
 
+        if(_boss.getHp() <= 50 && !_bossHighUsed){
+            _bossHighUsed = true; // Set the flag to true to prevent multiple activations
+            _soundManager->playSound("boss_high"); 
+            _boss.setAttackTime(0.3f); // Increase attack frequency
+        }
+        if(_boss.getHp() <= 20 && !_bossSkillUsed){
+            _bossSkillUsed = true; // Set the flag to true to prevent multiple activations
+            _soundManager->playSound("boss_skill"); 
+        }
         // 判断游戏胜负条件，根据具体血量判断
         if (_boss.getHp() <= 0) {
             _stateManager.setState(GameState::Victory);
-            // 此处可以加入播放胜利音效，例如 SoundManager::playSound("victory")
+            _soundManager->playSound("victory"); // 播放胜利音效
         }
         if (_player.getHp() <= 0) {
             _stateManager.setState(GameState::Defeat);
-            // 此处可以加入播放失败音效，例如 SoundManager::playSound("defeat")
+            _soundManager->playSound("defeat"); // 播放失败音效
         }
     }
 }
@@ -73,7 +83,7 @@ void Game::draw()
 {
     _window.clear(sf::Color::White);
     if (_boss.getHp() <= 20){
-        _window.clear(sf::Color(15, 15, 15)); // Dark gray background when boss HP is low
+        _window.clear(sf::Color(20, 20, 20)); // Dark gray background when boss HP is low
     }
     // 绘制游戏主体：在 Running 状态下显示游戏内容
     if (_stateManager.getState() == GameState::Running)

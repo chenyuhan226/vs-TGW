@@ -24,5 +24,6 @@ private:
     Boss _boss;
     std::unique_ptr<SoundManager> _soundManager; // 声音管理器
     GameStateManager _stateManager;
-    // ...其他成员
+    bool _bossSkillUsed = false; // boss_skill used flag
+    bool _bossHighUsed = false; // boss_high used flag
 };
