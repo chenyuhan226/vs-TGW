@@ -27,7 +27,7 @@ private:
 
     sf::Sprite _sprite;
     sf::Texture _texture;
-    const float _speed = 300.f;
+    const float _speed = 350.f;
 
     const sf::RenderWindow& _window;
 
