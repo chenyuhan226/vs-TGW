@@ -1,17 +1,25 @@
 # vs-TGW
 ## Introduction
+This is a simple shoot game.
+Operation　　　　　　| Button  
+:-------------------|:---  
+start the game      | <kbd>Enter</kbd>  
+move player　　　　　| <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd>  
+shoot               | <kbd>J</kbd>  
+exit the game       | <kbd>Esc</kbd>
+
+## Requirement
+- Cmake minimum version 3.28
+- C++ compile which supports c++ 17
+- Git
 
 ## Build and run
+Clone or download the project, under `\vs-TGW>` folder, in termial:
 ```bash
-# -G : according to which you use
-cmake -B build -G "MinGW Makefiles"
+cmake -B build      # may need to add -G according to the cmake you use
+# For example: cmake -B build -G "MinGW Makefiles", if you are using MinGW
 cmake --build build
-.\build\bin\vsTGW.exe
-```
-or run in bin folder, this way should copy data into `build/bin`
-```bash
-cd build/bin
-.\vsTGW.exe
+.\build\bin\vsTGW.exe   # run the game
 ```
 
 ## More Information
