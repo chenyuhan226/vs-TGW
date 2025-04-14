@@ -1,6 +1,6 @@
 #include "stateManager.hpp"
 
-GameStateManager::GameStateManager() : currentState(GameState::Running)
+GameStateManager::GameStateManager() : currentState(GameState::Start)
 {
     loadResources();
 }
@@ -31,6 +31,27 @@ void GameStateManager::loadResources()
     }
     defeatSprite.setTexture(defeatTexture);
     resize(defeatSprite, sf::Vector2u(2400, 1300)); // 假设窗口大小为2400x1300
+
+    // load font and set text properties
+    if (!font.loadFromFile("data/arial_mt.ttf"))
+    {
+        std::cerr << "Failed to load font!" << std::endl;
+    }
+    startText.setFont(font);
+    startText.setString("Press Enter to Start");
+    startText.setCharacterSize(150);
+    startText.setFillColor(sf::Color::Black);
+    startText.setPosition(500, 500); // Set position as needed
+    infoText.setFont(font);
+    infoText.setString("WASD: Move\nJ: Shoot\nEsc: Exit");
+    infoText.setCharacterSize(50);
+    infoText.setPosition(50, 1100); // Set position as needed
+    infoText.setFillColor(sf::Color::Black);
+    authorText.setFont(font);
+    authorText.setString("--by coldrain226");
+    authorText.setCharacterSize(30);
+    authorText.setPosition(2100, 1250); // Set position as needed
+    authorText.setFillColor(sf::Color::Black);
 }
 
 void GameStateManager::update(sf::Time deltaTime)
@@ -40,15 +61,22 @@ void GameStateManager::update(sf::Time deltaTime)
 
 void GameStateManager::draw(sf::RenderWindow &window)
 {
-    if (currentState == GameState::Victory)
-    {
-        window.draw(victorySprite);
+    switch (currentState) {
+        case GameState::Start:
+            window.draw(startText);
+            window.draw(infoText);
+            window.draw(authorText);
+            break;
+        case GameState::Victory:
+            window.draw(victorySprite);
+            break;
+        case GameState::Defeat:
+            window.draw(defeatSprite);
+            break;
+        default:
+            break;
     }
-    else if (currentState == GameState::Defeat)
-    {
-        window.draw(defeatSprite);
-    }
-    // Running 状态下无需绘制额外内容
+    // Running state does not draw anything else
 }
 
 // Resize the sprite to fit the new window size

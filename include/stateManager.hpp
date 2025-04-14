@@ -4,6 +4,7 @@
 
 enum class GameState
 {
+    Start,   // State before the game starts
     Running,
     Victory,
     Defeat
@@ -22,11 +23,17 @@ public:
 
 private:
     GameState currentState;
-    // 状态对应的图片及精灵
+    // Textures and Sprites
     sf::Texture victoryTexture;
     sf::Sprite victorySprite;
     sf::Texture defeatTexture;
     sf::Sprite defeatSprite;
+
+    // Text
+    sf::Font font;
+    sf::Text startText;
+    sf::Text infoText;
+    sf::Text authorText;
 
     // 加载胜利/失败资源
     void loadResources();
