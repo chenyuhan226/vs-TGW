@@ -48,9 +48,9 @@ void GameStateManager::loadResources()
     infoText.setPosition(50, 1100); // Set position as needed
     infoText.setFillColor(sf::Color::Black);
     authorText.setFont(font);
-    authorText.setString("--by coldrain226");
+    authorText.setString("Author: coldrain226\nVersion: 0.1.0");
     authorText.setCharacterSize(30);
-    authorText.setPosition(2100, 1250); // Set position as needed
+    authorText.setPosition(2100, 1200); // Set position as needed
     authorText.setFillColor(sf::Color::Black);
 }
 

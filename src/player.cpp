@@ -6,7 +6,7 @@ Player::Player(const sf::RenderWindow &window) : _window(window)
         throw std::runtime_error("Failed to load player image!");
     _sprite.setTexture(_texture);
     _texture.setSmooth(true);
-    _sprite.setScale(0.2f, 0.2f); // Scale down the sprite to make it smaller
+    _sprite.setScale(0.7f, 0.7f); // change the size of the player sprite
     _sprite.setOrigin(_texture.getSize().x * 0.5f, _texture.getSize().y * 0.5f);
     _sprite.setPosition(_window.getSize().x * 0.5, _window.getSize().y - _sprite.getGlobalBounds().height);
     initHp();

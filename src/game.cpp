@@ -58,7 +58,7 @@ void Game::update(sf::Time dt)
         {
             if (bullet.isActive() && bullet.collisionRect().intersects(_boss.collisionRect()))
             {
-                _boss.takeDamage(10); // the max boss hp is 100
+                _boss.takeDamage(4); // the max boss hp is 100
                 bullet.deactivate();  // Deactivate the bullet after collision
             }
         }
