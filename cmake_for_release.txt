@@ -1,0 +1,92 @@
+# a static build? -yes
+# cmake -B build -G "Visual Studio 17 2022" -A x64
+# cmake --build build --config Release
+
+cmake_minimum_required(VERSION 3.28)
+project(vsTGW LANGUAGES CXX)
+
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+option(BUILD_SHARED_LIBS OFF)
+
+include(FetchContent)
+FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 2.6.x
+    GIT_SHALLOW ON
+    EXCLUDE_FROM_ALL
+    SYSTEM
+    OVERRIDE_FIND_PACKAGE
+    CMAKE_ARGS 
+        -DBUILD_SHARED_LIBS=OFF
+        -DSFML_BUILD_AUDIO=ON
+        -DSFML_BUILD_GRAPHICS=ON
+        -DCMAKE_MSVC_RUNTIME_LIBRARY=${CMAKE_MSVC_RUNTIME_LIBRARY} # 同步运行时库设置
+)
+
+FetchContent_MakeAvailable(SFML)
+
+set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
+set(SOURCES
+    ${SRC_DIR}/main.cpp
+    ${SRC_DIR}/game.cpp
+    ${SRC_DIR}/player.cpp
+    ${SRC_DIR}/bullet.cpp
+    ${SRC_DIR}/boss.cpp
+    ${SRC_DIR}/bossAttack.cpp
+    ${SRC_DIR}/soundManager.cpp
+    ${SRC_DIR}/stateManager.cpp
+)
+add_executable(vsTGW ${SOURCES})
+
+# 添加头文件路径
+target_include_directories(vsTGW PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${SFML_SOURCE_DIR}/include
+)
+
+# 添加库文件路径
+target_link_directories(vsTGW PRIVATE
+    ${SFML_BINARY_DIR}/lib
+    ${SFML_SOURCE_DIR}/extlibs/libs-msvc-universal/x64
+)
+
+add_compile_definitions(SFML_STATIC)
+
+target_link_libraries(vsTGW PRIVATE 
+    sfml-graphics 
+    sfml-audio
+    sfml-window
+    sfml-system
+    # 显式链接Windows依赖库
+    opengl32.lib
+    winmm.lib
+    gdi32.lib
+    freetype.lib 
+    openal32.lib
+    flac.lib
+    vorbisenc.lib 
+    vorbisfile.lib
+    vorbis.lib
+    ogg.lib
+)
+
+target_compile_features(vsTGW PRIVATE cxx_std_17)
+
+# still need to copy dlls to output directory
+if(WIN32)
+    add_custom_command(
+        TARGET vsTGW
+        COMMENT "Copy OpenAL DLL"
+        PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:vsTGW>
+        VERBATIM)
+endif()
