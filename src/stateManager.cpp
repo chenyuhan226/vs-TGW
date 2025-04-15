@@ -43,14 +43,14 @@ void GameStateManager::loadResources()
     startText.setFillColor(sf::Color::Black);
     startText.setPosition(500, 500); // Set position as needed
     infoText.setFont(font);
-    infoText.setString("WASD: Move\nJ: Shoot\nEsc: Exit");
+    infoText.setString("WASD   : Move\nJ            : Shoot\nEsc       : Exit");
     infoText.setCharacterSize(50);
     infoText.setPosition(50, 1100); // Set position as needed
     infoText.setFillColor(sf::Color::Black);
     authorText.setFont(font);
-    authorText.setString("Author: coldrain226\nVersion: 0.1.0");
+    authorText.setString("Author: coldrain226\nVersion: 0.1.1");
     authorText.setCharacterSize(30);
-    authorText.setPosition(2100, 1200); // Set position as needed
+    authorText.setPosition(2050, 1200); // Set position as needed
     authorText.setFillColor(sf::Color::Black);
 }
 
